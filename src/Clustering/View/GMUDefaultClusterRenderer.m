@@ -24,6 +24,15 @@
 #import "GMUClusterIconGenerator.h"
 #import "GMUWrappingDictionaryKey.h"
 
+
+@interface  GMUDefaultClusterRenderer()
+
+@property (strong, nonatomic, readonly) UIImage *markerIcon;
+@property (strong, nonatomic, readonly) UIImage *markerFavIcon;
+
+@end
+
+
 // Clusters smaller than this threshold will be expanded.
 static const NSUInteger kGMUMinClusterSize = 4;
 
@@ -72,7 +81,8 @@ static const double kGMUAnimationDuration = 0.5;  // seconds.
     _renderedClusters = [[NSMutableSet alloc] init];
     _renderedClusterItems = [[NSMutableSet alloc] init];
     _animatesClusters = YES;
-    _zIndex = 1;
+      _markerIcon = [UIImage imageNamed:@"pin_on_map"];
+      _markerFavIcon = [UIImage imageNamed:@"favMap"];
   }
   return self;
 }
@@ -274,10 +284,12 @@ static const double kGMUAnimationDuration = 0.5;  // seconds.
         fromPosition = fromCluster.position;
       }
 
+        
+        // ? self.favMapSelected : self.pinOnMapSelected;
       GMSMarker *marker = [self markerWithPosition:item.position
                                               from:fromPosition
                                           userData:item
-                                       clusterIcon:nil
+                                       clusterIcon:item.isFav ? self.markerFavIcon : self.markerIcon
                                           animated:shouldAnimate];
       [_markers addObject:marker];
       [_renderedClusterItems addObject:item];
@@ -300,7 +312,6 @@ static const double kGMUAnimationDuration = 0.5;  // seconds.
     marker.icon = clusterIcon;
     marker.groundAnchor = CGPointMake(0.5, 0.5);
   }
-  marker.zIndex = _zIndex;
   marker.map = _mapView;
 
   if (animated) {

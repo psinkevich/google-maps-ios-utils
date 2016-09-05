@@ -26,4 +26,6 @@
  */
 - (UIImage *)iconForSize:(NSUInteger)size;
 
+- (UIImage *)standartIcon;
+
 @end

@@ -88,17 +88,43 @@ static NSArray<UIColor *> *kGMUBucketBackgroundColors;
   return self;
 }
 
+- (UIImage *)standartIcon
+{
+    CGRect rect = CGRectMake(0.f, 0.f, 10, 10);
+    UIGraphicsBeginImageContext(rect.size);
+    
+    // Draw background circle.
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0f);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(ctx);
+    UIColor *backColor = [UIColor colorWithRed:255/255 green:88/255 blue:82/255 alpha:1.0f];
+    CGContextSetFillColorWithColor(ctx, backColor.CGColor);
+    CGContextFillEllipseInRect(ctx, rect);
+    CGContextRestoreGState(ctx);
+    
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    
+    return newImage;
+}
+
 - (UIImage *)iconForSize:(NSUInteger)size {
   NSUInteger bucketIndex = [self bucketIndexForSize:size];
   NSString *text;
 
   // If size is smaller to first bucket size, use the size as is otherwise round it down to the
   // nearest bucket to limit the number of cluster icons we need to generate.
+    /*
   if (size < _buckets[0].unsignedLongValue) {
     text = [NSString stringWithFormat:@"%ld", (unsigned long)size];
   } else {
     text = [NSString stringWithFormat:@"%ld+", _buckets[bucketIndex].unsignedLongValue];
   }
+     */
+    
+    text = [NSString stringWithFormat:@"%ld", (unsigned long)size];
   if (_backgroundImages != nil) {
     UIImage *image = _backgroundImages[bucketIndex];
     return [self iconForText:text withBaseImage:image];
@@ -126,7 +152,7 @@ static NSArray<UIColor *> *kGMUBucketBackgroundColors;
 
   UIFont *font = [UIFont boldSystemFontOfSize:12];
   CGSize size = image.size;
-  UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+  UIGraphicsBeginImageContext(size);
   [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
   CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
 
@@ -142,6 +168,8 @@ static NSArray<UIColor *> *kGMUBucketBackgroundColors;
                                 (rect.size.height - textSize.height) / 2);
   [text drawInRect:CGRectIntegral(textRect) withAttributes:attributes];
 
+    
+    
   UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
@@ -176,7 +204,7 @@ static NSArray<UIColor *> *kGMUBucketBackgroundColors;
   CGContextRef ctx = UIGraphicsGetCurrentContext();
   CGContextSaveGState(ctx);
   bucketIndex = MIN(bucketIndex, kGMUBucketBackgroundColors.count - 1);
-  UIColor *backColor = kGMUBucketBackgroundColors[bucketIndex];
+    UIColor *backColor = [UIColor colorWithRed:255/255 green:88/255 blue:82/255 alpha:1.0f];
   CGContextSetFillColorWithColor(ctx, backColor.CGColor);
   CGContextFillEllipseInRect(ctx, rect);
   CGContextRestoreGState(ctx);

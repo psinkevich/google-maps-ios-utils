@@ -54,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (UIImage *)iconForSize:(NSUInteger)size;
 
+- (UIImage *)standartIcon;
+
 @end
 
 NS_ASSUME_NONNULL_END
